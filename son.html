@@ -3,38 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sadece İkimiz</title>
+    <title>Sonsuz Yolculuğumuz</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background: #2d2d2d; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; text-align: center; }
-        #story { font-size: 20px; margin-bottom: 20px; line-height: 1.5; }
-        button { background: #e91e63; color: white; border: none; padding: 15px 30px; margin: 10px; border-radius: 25px; font-size: 18px; cursor: pointer; width: 100%; max-width: 300px; }
+        body { margin: 0; overflow: hidden; background: #87CEEB; display: flex; flex-direction: column; align-items: center; }
+        canvas { display: block; background: linear-gradient(#87CEEB, #FFDAB9); }
+        #text { position: absolute; top: 20px; color: white; font-family: sans-serif; text-align: center; pointer-events: none; text-shadow: 1px 1px 2px black; }
     </style>
 </head>
 <body>
-    <div id="story">İzmir'de güneşli bir gün... Nereden başlamak istersin?</div>
-    <div id="choices"></div>
+    <div id="text"><h1>Sonsuza Kadar Seninle...</h1><p>Yolumuz hiç bitmesin.</p></div>
+    <canvas id="gameCanvas"></canvas>
 
     <script>
-        const storyData = {
-            start: { text: "İzmir'de güzel bir gün, nereye gitmek istersin?", choices: [ { text: "Kordon'da yürüyüş", next: "kordon" }, { text: "Bizim ilk buluştuğumuz yer", next: "ilk_bulusma" } ] },
-            kordon: { text: "Deniz kokusu harika! Bir dondurma mı alalım yoksa çay mı içelim?", choices: [ { text: "Dondurma", next: "dondurma" }, { text: "Çay", next: "cay" } ] },
-            ilk_bulusma: { text: "O günü hatırlıyor musun? Gözlerinin içine baktığım o an...", choices: [ { text: "Tabii ki hatırlıyorum!", next: "son" } ] },
-            son: { text: "Seni seviyorum, hayatımdaki en güzel anlar seninle olanlar. ❤️", choices: [] }
-        };
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        function showScene(scene) {
-            const storyDiv = document.getElementById('story');
-            const choicesDiv = document.getElementById('choices');
-            storyDiv.innerText = storyData[scene].text;
-            choicesDiv.innerHTML = '';
-            storyData[scene].choices.forEach(c => {
-                const btn = document.createElement('button');
-                btn.innerText = c.text;
-                btn.onclick = () => showScene(c.next);
-                choicesDiv.appendChild(btn);
-            });
+        let offset = 0;
+
+        function draw() {
+            // Gökyüzü ve Deniz
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
+            ctx.fillStyle = '#1E90FF';
+            ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
+
+            // Yol/Kumsal (Hareket Efekti)
+            ctx.fillStyle = '#F4A460';
+            ctx.fillRect(0, canvas.height * 0.7, canvas.width, canvas.height * 0.3);
+
+            // Karakterler (İki kişi)
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2 - 20, canvas.height * 0.7 - (Math.sin(offset) * 10), 15, 0, Math.PI * 2);
+            ctx.arc(canvas.width / 2 + 20, canvas.height * 0.7 - (Math.sin(offset + 1) * 10), 15, 0, Math.PI * 2);
+            ctx.fill();
+
+            offset += 0.1;
+            requestAnimationFrame(draw);
         }
-        showScene('start');
+        draw();
     </script>
 </body>
 </html>
