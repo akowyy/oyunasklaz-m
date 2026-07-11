@@ -3,44 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sonsuz Yolculuğumuz</title>
+    <title>Sonsuza Kadar Seninle</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #87CEEB; display: flex; flex-direction: column; align-items: center; }
-        canvas { display: block; background: linear-gradient(#87CEEB, #FFDAB9); }
-        #text { position: absolute; top: 20px; color: white; font-family: sans-serif; text-align: center; pointer-events: none; text-shadow: 1px 1px 2px black; }
+        body { margin: 0; overflow: hidden; background: #ff9a9e; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        canvas { display: block; }
+        #text { position: absolute; top: 10%; color: white; font-family: 'Verdana', sans-serif; text-align: center; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); pointer-events: none; }
     </style>
 </head>
 <body>
-    <div id="text"><h1>Sonsuza Kadar Seninle...</h1><p>Yolumuz hiç bitmesin.</p></div>
-    <canvas id="gameCanvas"></canvas>
+
+    <div id="text">
+        <h1>Sonsuz Yürüyüşümüz</h1>
+        <p>Yolumuz hiç bitmesin...</p>
+    </div>
+    <canvas id="game"></canvas>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
+        const canvas = document.getElementById('game');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        let offset = 0;
+        let groundOffset = 0;
 
         function draw() {
-            // Gökyüzü ve Deniz
-            ctx.fillStyle = '#87CEEB';
-            ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
-            ctx.fillStyle = '#1E90FF';
-            ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
+            // Gökyüzü (Gün batımı rengi)
+            let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#ff9a9e');
+            grad.addColorStop(1, '#fad0c4');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Yol/Kumsal (Hareket Efekti)
-            ctx.fillStyle = '#F4A460';
+            // Kumsal (İlerleyen yol efekti)
+            ctx.fillStyle = '#e6c2a8';
             ctx.fillRect(0, canvas.height * 0.7, canvas.width, canvas.height * 0.3);
 
-            // Karakterler (İki kişi)
-            ctx.fillStyle = 'black';
-            ctx.beginPath();
-            ctx.arc(canvas.width / 2 - 20, canvas.height * 0.7 - (Math.sin(offset) * 10), 15, 0, Math.PI * 2);
-            ctx.arc(canvas.width / 2 + 20, canvas.height * 0.7 - (Math.sin(offset + 1) * 10), 15, 0, Math.PI * 2);
-            ctx.fill();
+            // Karakterler (İki kişi - Basit silüetler)
+            ctx.fillStyle = '#5d4037';
+            let yPos = canvas.height * 0.75 + Math.sin(Date.now() / 200) * 10;
+            // Kişi 1
+            ctx.beginPath(); ctx.arc(canvas.width / 2 - 30, yPos, 15, 0, Math.PI * 2); ctx.fill();
+            // Kişi 2
+            ctx.beginPath(); ctx.arc(canvas.width / 2 + 30, yPos, 15, 0, Math.PI * 2); ctx.fill();
 
-            offset += 0.1;
             requestAnimationFrame(draw);
         }
         draw();
