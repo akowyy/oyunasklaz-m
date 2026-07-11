@@ -1,2 +1,23 @@
-# oyunasklaz-m
-aaaaqqqqqqqqqq
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sürpriz!</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #ffefef; font-family: sans-serif; text-align: center; }
+        #gift { font-size: 80px; cursor: pointer; transition: transform 0.2s; }
+        #message { display: none; font-size: 24px; color: #d63384; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div id="gift" onclick="openGift()">🎁</div>
+    <div id="message">Seni çok seviyorum! ❤️</div>
+    <script>
+        function openGift() {
+            document.getElementById('gift').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
