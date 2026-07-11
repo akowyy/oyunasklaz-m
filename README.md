@@ -3,21 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sürpriz!</title>
+    <title>Sonsuz Yolculuğumuz</title>
     <style>
-        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #ffefef; font-family: sans-serif; text-align: center; }
-        #gift { font-size: 80px; cursor: pointer; transition: transform 0.2s; }
-        #message { display: none; font-size: 24px; color: #d63384; font-weight: bold; }
+        body { margin: 0; overflow: hidden; background: #87CEEB; display: flex; flex-direction: column; align-items: center; }
+        canvas { display: block; background: linear-gradient(#87CEEB, #FFDAB9); }
+        #text { position: absolute; top: 20px; color: white; font-family: sans-serif; text-align: center; pointer-events: none; text-shadow: 1px 1px 2px black; }
     </style>
 </head>
 <body>
-    <div id="gift" onclick="openGift()">🎁</div>
-    <div id="message">Seni çok seviyorum! ❤️</div>
+    <div id="text"><h1>Sonsuza Kadar Seninle...</h1><p>Yolumuz hiç bitmesin.</p></div>
+    <canvas id="gameCanvas"></canvas>
+
     <script>
-        function openGift() {
-            document.getElementById('gift').style.display = 'none';
-            document.getElementById('message').style.display = 'block';
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let offset = 0;
+
+        function draw() {
+            // Gökyüzü ve Deniz
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, canvas.width, canvas.height / 2);
+            ctx.fillStyle = '#1E90FF';
+            ctx.fillRect(0, canvas.height / 2, canvas.width, canvas.height / 2);
+
+            // Yol/Kumsal (Hareket Efekti)
+            ctx.fillStyle = '#F4A460';
+            ctx.fillRect(0, canvas.height * 0.7, canvas.width, canvas.height * 0.3);
+
+            // Karakterler (İki kişi)
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2 - 20, canvas.height * 0.7 - (Math.sin(offset) * 10), 15, 0, Math.PI * 2);
+            ctx.arc(canvas.width / 2 + 20, canvas.height * 0.7 - (Math.sin(offset + 1) * 10), 15, 0, Math.PI * 2);
+            ctx.fill();
+
+            offset += 0.1;
+            requestAnimationFrame(draw);
         }
+        draw();
     </script>
 </body>
 </html>
